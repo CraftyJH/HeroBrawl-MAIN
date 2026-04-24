@@ -74,8 +74,14 @@ A default debug keystore is used for the `release` build type so developers can 
 
 ## Install on a device
 
+👉 **The simplest install path (no toolchain) is documented in the top-level [`INSTALL.md`](../INSTALL.md).**
+
+For developers, from this `android/` folder:
+
 ```bash
-adb install -r android/app/build/outputs/apk/debug/app-debug.apk
+./gradlew :app:installDebug
+# or:
+adb install -r app/build/outputs/apk/debug/app-debug.apk
 ```
 
 ## Where to expand

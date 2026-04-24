@@ -38,6 +38,12 @@ HeroBrawl is a Kotlin + Jetpack Compose Android app (plus a reference React web 
 * **Idle rewards** — 12-hour cap, rates scale with campaign progress, one-click claim.
 * **Persistent autosave** — DataStore on Android, localStorage on web.
 
+## 📱 Install it on your Android phone
+
+**The easy path (no setup):** read [`INSTALL.md`](INSTALL.md) — you download a prebuilt APK from GitHub Actions / Releases and tap to install on your phone. No computer toolchain required.
+
+**The developer path:** Android Studio or Gradle CLI below.
+
 ## 🚀 Android — build & run
 
 Prereqs: Android Studio Giraffe+ (AGP 8.5) or JDK 17 + Android SDK with platform `android-35` and `build-tools;35.0.0`.
