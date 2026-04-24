@@ -122,7 +122,54 @@ data class Currency(
     val dust: Long = 0,
     val stoneFragments: Long = 0,
     val eventTokens: Long = 0,
+    val vipXp: Long = 0, // accumulated gem spending drives VIP level
 )
+
+// ============================================================================
+//  Cosmetics: Avatars & Frames
+// ============================================================================
+
+@Serializable
+enum class AvatarKind { HERO_PORTRAIT, ICON }
+
+@Serializable
+data class AvatarId(val kind: AvatarKind, val value: String) {
+    companion object {
+        fun hero(templateId: String) = AvatarId(AvatarKind.HERO_PORTRAIT, templateId)
+        fun icon(iconId: String) = AvatarId(AvatarKind.ICON, iconId)
+    }
+}
+
+@Serializable
+data class CosmeticsState(
+    val avatar: AvatarId = AvatarId.icon("default"),
+    val frame: String = "wooden",
+    val unlockedAvatars: Set<String> = setOf("ICON:default"),
+    val unlockedFrames: Set<String> = setOf("wooden"),
+)
+
+// ============================================================================
+//  Items & Inventory (non-hero collectibles)
+// ============================================================================
+
+@Serializable
+enum class ItemKind {
+    CONSUMABLE_SCROLL_HEROIC, CONSUMABLE_SCROLL_BASIC, CONSUMABLE_PROPHET_ORB,
+    XP_POTION_SMALL, XP_POTION_LARGE, ENERGY_DRINK,
+    CHEST_COMMON, CHEST_RARE, CHEST_LEGENDARY,
+    SKIN_TICKET, AVATAR_TICKET,
+    GIFT_BOX,
+}
+
+@Serializable
+data class Item(
+    val id: String,
+    val kind: ItemKind,
+    val count: Int,
+)
+
+@Serializable
+data class Inventory(val items: Map<String, Int> = emptyMap())
 
 @Serializable
 data class IdleRates(val gold: Long, val spirit: Long, val shards: Long)
@@ -186,12 +233,62 @@ data class GameMessage(
     val kind: String, // info/success/warn/reward
 )
 
+// ============================================================================
+//  VIP / Shop / Mail
+// ============================================================================
+
+@Serializable
+data class VipState(
+    val level: Int = 0,
+    val monthlyCardExpiresAt: Long = 0L,
+    val dailyGemsClaimedAt: Long = 0L,
+)
+
+@Serializable
+data class ShopState(
+    val dailyDealsGenAt: Long = 0L,
+    val purchases: Map<String, Int> = emptyMap(), // packId -> count owned/bought
+    val lastDaily: String = "",
+)
+
+@Serializable
+data class MailMessage(
+    val id: String,
+    val sentAt: Long,
+    val sender: String,
+    val subject: String,
+    val body: String,
+    val rewards: List<MailReward> = emptyList(),
+    val claimed: Boolean = false,
+)
+
+@Serializable
+data class MailReward(val kind: String, val amount: Long = 0, val itemId: String? = null)
+
+@Serializable
+data class MailState(val messages: List<MailMessage> = emptyList())
+
+// ============================================================================
+//  Town Buildings (new iteration layer)
+// ============================================================================
+
+@Serializable
+enum class BuildingId {
+    CASTLE, SUMMONING_CIRCLE, ARENA, CAMPAIGN_GATE,
+    BLACKSMITH, MARKET, MAILBOX, TAVERN, EVENT_PAVILION,
+}
+
+@Serializable
+data class BuildingState(
+    val levels: Map<String, Int> = emptyMap(), // buildingId.name -> level
+)
+
 @Serializable
 data class Settings(val sound: Boolean = true, val haptics: Boolean = true)
 
 @Serializable
 data class GameState(
-    val version: Int = 2,
+    val version: Int = 3,
     val createdAt: Long,
     val playerName: String = "Champion",
     val playerLevel: Int = 1,
@@ -209,4 +306,10 @@ data class GameState(
     val messages: List<GameMessage> = emptyList(),
     val settings: Settings = Settings(),
     val firstRunClaimed: Boolean = false,
+    val cosmetics: CosmeticsState = CosmeticsState(),
+    val inventory: Inventory = Inventory(),
+    val vip: VipState = VipState(),
+    val shop: ShopState = ShopState(),
+    val mail: MailState = MailState(),
+    val buildings: BuildingState = BuildingState(),
 )

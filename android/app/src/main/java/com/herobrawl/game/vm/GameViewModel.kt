@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.herobrawl.game.engine.Achievements
+import com.herobrawl.game.engine.DailyLogin
 import com.herobrawl.game.engine.Quests
 import com.herobrawl.game.model.GameMessage
 import com.herobrawl.game.model.GameState
@@ -27,7 +28,9 @@ class GameViewModel(app: Application) : AndroidViewModel(app) {
             val loaded = SaveStore.load(getApplication())
             val now = System.currentTimeMillis()
             val initial = loaded ?: SaveStore.newGame(now)
-            _state.value = Quests.ensureRollover(Achievements.evaluate(initial), now)
+            val rolled = Quests.ensureRollover(Achievements.evaluate(initial), now)
+            val greeted = DailyLogin.checkIn(rolled, now)
+            _state.value = greeted
         }
     }
 

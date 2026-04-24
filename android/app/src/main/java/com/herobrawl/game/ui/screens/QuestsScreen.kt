@@ -39,11 +39,7 @@ fun QuestsScreen(
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-        Text("Daily Quests", color = HBColors.Text, fontSize = 24.sp, fontWeight = FontWeight.Black)
-        Text(
-            "Resets each UTC day. Clear them all for a chunky bonus.",
-            color = HBColors.TextDim, fontSize = 12.sp,
-        )
+        Text("Daily Quests", color = HBColors.Text, fontSize = 22.sp, fontWeight = FontWeight.Black)
 
         Card {
             Column {

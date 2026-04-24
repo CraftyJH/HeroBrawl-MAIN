@@ -58,12 +58,19 @@ fun CampaignScreen(
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-        Text("Campaign", color = HBColors.Text, fontSize = 24.sp, fontWeight = FontWeight.Black)
-        Text(
-            "Chapter ${state.campaign.chapter} · Stage ${state.campaign.stage}",
-            color = HBColors.TextDim,
-            fontSize = 12.sp,
-        )
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text("Campaign", color = HBColors.Text, fontSize = 22.sp, fontWeight = FontWeight.Black)
+            Text(
+                "${state.campaign.chapter}-${state.campaign.stage}",
+                color = HBColors.Gold,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Black,
+            )
+        }
 
         Card {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -121,16 +128,6 @@ fun CampaignScreen(
             }
         }
 
-        // Info card
-        Card {
-            Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                Text("TIPS", color = HBColors.TextDim, fontSize = 12.sp, fontWeight = FontWeight.Bold)
-                Text("Front-row (1-3) soak damage → Guardians/Berserkers.", color = HBColors.TextDim, fontSize = 12.sp)
-                Text("Back-row (4-5) is safer → Rangers/Mages/Clerics.", color = HBColors.TextDim, fontSize = 12.sp)
-                Text("Faction advantage: +20% damage vs the faction you counter.", color = HBColors.TextDim, fontSize = 12.sp)
-                Text("5-of-a-kind lineup unlocks a Mono-Faction Aura.", color = HBColors.TextDim, fontSize = 12.sp)
-            }
-        }
     }
 
     val b = battle
@@ -170,6 +167,7 @@ fun CampaignScreen(
                             if (slot != null) next = Progression.giveXp(next, slot, rewards.xp)
                         }
                         next = Quests.bump(next, "campaign-3")
+                        next = com.herobrawl.game.engine.PlayerProgression.givePlayerXp(next, 50 + b.chapter * 5)
                         Events.gainTokens(next, 5L)
                     }
                     notify(

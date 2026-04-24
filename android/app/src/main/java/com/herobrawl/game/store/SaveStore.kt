@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
-val Context.dataStore by preferencesDataStore(name = "herobrawl_save_v2")
+val Context.dataStore by preferencesDataStore(name = "herobrawl_save_v3")
 
 object SaveStore {
     private val SAVE_KEY: Preferences.Key<String> = stringPreferencesKey("save")

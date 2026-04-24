@@ -25,7 +25,34 @@ HeroBrawl is a Kotlin + Jetpack Compose Android app (plus a reference React web 
 | Skill growth is hidden in RNG | **Explicit skill leveling** (🧪 Dust) |
 | Gear is fungible and forgettable | **Equipment Stones** (💠 Fragments) with 5 types × 3 slots |
 
-## 🧱 Game systems (v0.2 iteration)
+## 📱 UI — visual-first (v0.3)
+
+The Android UI is deliberately **icon-driven**, not text-driven, like Idle Heroes and TapTap Heroes:
+
+- **Top HUD** — avatar + unlocked frame on the left (tap to open the Profile picker), player name + level + XP bar + VIP badge, mail icon with unread counter, then compact gold & gem currency pills. All other resources live in the Bag → Resources tab.
+- **Castle home** — a parallax sky, central castle, then a 3×3 grid of tappable buildings (Campaign Gate, Coliseum, Summoning Circle, Blacksmith, Market, Mailbox, Tavern, Event Pavilion) with red notification badges when anything is waiting for you.
+- **Bottom navigation (5 icons)** — 🏰 Castle · 🎒 Bag · ✨ Summon · 🛒 Shop · ⚔️ Battles. The Summon button is a raised, animated center button. Labels are tiny; icons do the work.
+- **Bag** has three sub-pages: Heroes (with lineup editor), Items (usable items/chests/tickets), and Resources (every other currency).
+- **Shop** has three sub-pages: Packs, Gem Packs (real-money), and Spend Gems (in-game offers). Active Monthly Cards show as a highlighted banner.
+- **Battles** is the PvE/PvP hub: Campaign, Arena, Events, Quests, Medals, Guild (coming soon).
+- **Profile** is a dedicated avatar picker with three tabs: icon avatars, frames, or any hero portrait you own. Avatars/frames unlock via VIP level, arena rating, campaign progress, and heroes collected — there's no VIP paywall on gameplay.
+
+## 🧱 Game systems (v0.3 — "next content layer")
+
+New this iteration:
+
+- **VIP (10 tiers)** — gem-purchase progression. Perks are quality-of-life only (idle rate bonuses, +idle cap hours, extra arena tickets, cosmetic unlocks). No heroes are VIP-locked.
+- **Shop with packs** — Starter/Monthly Card/Rookie Pack/Growth Fund/Weekly/Event Supreme bundles + 6 gem tiers + 9 "Spend Gems" in-game offers (daily-limited).
+- **Monthly Card** — 30-day subscription, 300 gems immediately, 100 gems/day delivered via mail.
+- **Avatar & Frame cosmetics** — 10 icons + 8 frames, each with an unlock hint.
+- **Hero portrait avatars** — any hero you own can be your avatar.
+- **Mail system** — unread-count badge on the HUD, Claim All button, auto-delete read messages.
+- **Inventory + items** — usable XP potions, battle rations, chests (common/rare/legendary), gift boxes, skin/avatar tickets.
+- **Daily Login** — 7-day cumulative streak that deposits into Mail (no intrusive popups).
+- **Town buildings** — the Castle screen reflects each as a clickable tile with live context (campaign stage, arena rating, scroll count, etc.).
+- **Player level + XP** — heroes + battles grant player XP, driving the XP bar in the top HUD.
+
+## 🧱 Game systems (v0.2 baseline)
 
 * **6 factions** — Vanguard → Horde → Wildwood → Arcane → Vanguard, plus the Radiance ↔ Abyss mirror pair.
 * **6 classes** — Guardian, Berserker, Mage, Assassin, Ranger, Cleric. Each has a signature active skill, combat passive, and unique targeting.

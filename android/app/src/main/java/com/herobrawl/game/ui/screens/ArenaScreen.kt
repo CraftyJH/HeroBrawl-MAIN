@@ -157,7 +157,8 @@ fun ArenaScreen(
                             prophetOrbs = s.currency.prophetOrbs + if (result.winner == BattleUnit.Side.ALLY) 2 else 0,
                         ),
                     )
-                    Quests.bump(next, "arena-2")
+                    val bumped = Quests.bump(next, "arena-2")
+                    com.herobrawl.game.engine.PlayerProgression.givePlayerXp(bumped, 20)
                 }
                 notify(
                     if (result.winner == BattleUnit.Side.ALLY) "Arena win · rating +$delta"

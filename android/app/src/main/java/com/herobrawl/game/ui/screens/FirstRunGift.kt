@@ -64,7 +64,7 @@ fun FirstRunGift(
                         val p1 = Gacha.pull(seeded, 1)
                         val p2 = Gacha.pull(p1.state, 1)
                         val p3 = Gacha.pull(p2.state, 1)
-                        val final = p3.state.copy(
+                        var final = p3.state.copy(
                             currency = p3.state.currency.copy(
                                 heroicScrolls = p3.state.currency.heroicScrolls + 15,
                                 gems = p3.state.currency.gems + 500,
@@ -82,6 +82,25 @@ fun FirstRunGift(
                             ),
                             gacha = p3.state.gacha.copy(pityCount = 0, sinceEpic = 0),
                             firstRunClaimed = true,
+                        )
+                        // Seed a welcome gift box + chest in inventory so the Bag tab has items.
+                        final = com.herobrawl.game.engine.Inventory.add(final, "gift_box", 1)
+                        final = com.herobrawl.game.engine.Inventory.add(final, "chest_rare", 1)
+                        final = com.herobrawl.game.engine.Inventory.add(final, "xp_small", 3)
+                        // Welcome mail
+                        final = com.herobrawl.game.engine.MailEngine.send(
+                            final,
+                            com.herobrawl.game.model.MailMessage(
+                                id = java.util.UUID.randomUUID().toString(),
+                                sentAt = System.currentTimeMillis(),
+                                sender = "HeroBrawl Team",
+                                subject = "Welcome, Champion!",
+                                body = "Thanks for playing HeroBrawl. Here's a little something to get you started.",
+                                rewards = listOf(
+                                    com.herobrawl.game.model.MailReward("gems", 100),
+                                    com.herobrawl.game.model.MailReward("heroicScrolls", 2),
+                                ),
+                            )
                         )
                         notify("Starter pack opened!", "reward")
                         final
