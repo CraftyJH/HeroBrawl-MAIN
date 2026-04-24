@@ -12,6 +12,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -30,8 +31,12 @@ fun FirstRunGift(
     notify: (String, String) -> Unit,
 ) {
     if (state.firstRunClaimed) return
+    // If the player somehow already has heroes (e.g. migration), mark the first
+    // run as satisfied on the next frame — never mutate state during composition.
     if (state.heroes.isNotEmpty()) {
-        update { it.copy(firstRunClaimed = true) }
+        LaunchedEffect(Unit) {
+            update { it.copy(firstRunClaimed = true) }
+        }
         return
     }
 

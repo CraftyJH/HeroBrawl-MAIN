@@ -131,31 +131,20 @@ fun CastleScreen(
         )
         Spacer(Modifier.height(8.dp))
 
-        // Row 1
-        BuildingGridRow(
-            entries = buildings.slice(0..2),
-            badges = mapOf(
-                BuildingId.CAMPAIGN_GATE to "${state.campaign.chapter}-${state.campaign.stage}",
-                BuildingId.ARENA to state.arena.rating.toString(),
-                BuildingId.SUMMONING_CIRCLE to "${state.currency.heroicScrolls}📜",
-            ),
-            go = go,
+        // Building grid: chunk into rows of up to 3 so we never over-index.
+        val badgeMap: Map<BuildingId, String?> = mapOf(
+            BuildingId.CAMPAIGN_GATE to "${state.campaign.chapter}-${state.campaign.stage}",
+            BuildingId.ARENA to state.arena.rating.toString(),
+            BuildingId.SUMMONING_CIRCLE to "${state.currency.heroicScrolls}📜",
+            BuildingId.MARKET to if (state.vip.monthlyCardExpiresAt > now) "🗓️" else null,
+            BuildingId.MAILBOX to com.herobrawl.game.engine.MailEngine.unclaimedCount(state)
+                .takeIf { it > 0 }?.toString(),
+            BuildingId.EVENT_PAVILION to if (eventTokens > 0) formatNum(eventTokens) else null,
         )
-        BuildingGridRow(
-            entries = buildings.slice(3..5),
-            badges = mapOf(
-                BuildingId.MARKET to if (state.vip.monthlyCardExpiresAt > now) "🗓️" else null,
-                BuildingId.MAILBOX to com.herobrawl.game.engine.MailEngine.unclaimedCount(state).takeIf { it > 0 }?.toString(),
-            ).filterValues { it != null }.mapValues { it.value!! },
-            go = go,
-        )
-        BuildingGridRow(
-            entries = buildings.slice(6..8),
-            badges = mapOf(
-                BuildingId.EVENT_PAVILION to if (eventTokens > 0) formatNum(eventTokens) else null,
-            ).filterValues { it != null }.mapValues { it.value!! },
-            go = go,
-        )
+        val activeBadges = badgeMap.filterValues { it != null }.mapValues { it.value!! }
+        buildings.chunked(3).forEach { row ->
+            BuildingGridRow(entries = row, badges = activeBadges, go = go)
+        }
 
         Spacer(Modifier.height(10.dp))
 
