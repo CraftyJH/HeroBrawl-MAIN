@@ -1,0 +1,23 @@
+# Gradle
+.gradle/
+build/
+out/
+captures/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# Android
+local.properties
+.cxx/
+
+# Kotlin
+.kotlin/
+
+# Logs
+*.log
+
+# macOS
+.DS_Store
