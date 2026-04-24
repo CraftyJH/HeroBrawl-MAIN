@@ -1,0 +1,72 @@
+name: Android release
+
+# Publishes a downloadable GitHub Release with the debug APK attached
+# whenever a tag like `v0.2.1` is pushed. You can install the APK directly
+# from the release page on your phone.
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag to publish (e.g. v0.2.1)"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Android SDK packages
+        run: sdkmanager --install "platforms;android-35" "build-tools;35.0.0" "platform-tools"
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x android/gradlew
+
+      - name: Build APKs
+        working-directory: android
+        run: |
+          ./gradlew :app:assembleDebug :app:assembleRelease :app:bundleRelease --no-daemon --stacktrace
+
+      - name: Collect artifacts
+        run: |
+          mkdir -p artifacts
+          cp android/app/build/outputs/apk/debug/app-debug.apk artifacts/HeroBrawl-debug.apk
+          cp android/app/build/outputs/apk/release/app-release.apk artifacts/HeroBrawl-release.apk
+          cp android/app/build/outputs/bundle/release/app-release.aab artifacts/HeroBrawl-release.aab
+          ls -la artifacts/
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.event.inputs.tag || github.ref_name }}
+          name: HeroBrawl ${{ github.event.inputs.tag || github.ref_name }}
+          draft: false
+          prerelease: true
+          body: |
+            ## HeroBrawl ${{ github.event.inputs.tag || github.ref_name }}
+
+            Download `HeroBrawl-debug.apk` from the **Assets** list below and install it on your Android phone.
+
+            See [`INSTALL.md`](https://github.com/${{ github.repository }}/blob/main/INSTALL.md) for step-by-step instructions (including enabling "Install unknown apps").
+          files: |
+            artifacts/HeroBrawl-debug.apk
+            artifacts/HeroBrawl-release.apk
+            artifacts/HeroBrawl-release.aab
