@@ -49,11 +49,7 @@ fun EventsScreen(
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-        Text("Events", color = HBColors.Text, fontSize = 24.sp, fontWeight = FontWeight.Black)
-        Text(
-            "Every battle, pull, and claim earns event tokens. Hit milestones to unlock the limited hero.",
-            color = HBColors.TextDim, fontSize = 12.sp,
-        )
+        Text("Events", color = HBColors.Text, fontSize = 22.sp, fontWeight = FontWeight.Black)
 
         Card {
             Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
@@ -153,10 +149,5 @@ fun EventsScreen(
             }
         }
 
-        // Test helper: grant tokens for free (debug). Remove before ship.
-        OutlinedPillButton(
-            text = "+50 tokens (debug)",
-            onClick = { update { Events.gainTokens(it, 50) } },
-        )
     }
 }

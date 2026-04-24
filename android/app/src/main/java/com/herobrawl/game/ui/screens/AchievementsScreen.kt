@@ -42,11 +42,19 @@ fun AchievementsScreen(
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp),
     ) {
-        Text("Achievements", color = HBColors.Text, fontSize = 24.sp, fontWeight = FontWeight.Black)
-        Text(
-            "${claimed.size}/${Achievements.all.size} claimed · ${unlocked.size} unlocked",
-            color = HBColors.TextDim, fontSize = 12.sp,
-        )
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text("Medals", color = HBColors.Text, fontSize = 22.sp, fontWeight = FontWeight.Black)
+            Text(
+                "🏆 ${claimed.size}/${Achievements.all.size}",
+                color = HBColors.Gold,
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Bold,
+            )
+        }
 
         Achievements.all.forEach { a ->
             val isUnlocked = a.id in unlocked

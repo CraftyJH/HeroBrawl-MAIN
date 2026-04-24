@@ -59,12 +59,14 @@ fun SummonScreen(
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        Text("Summon", color = HBColors.Text, fontSize = 24.sp, fontWeight = FontWeight.Black)
-        Text(
-            "Pity: $pity/60 · $toPity pulls until guaranteed legendary.",
-            color = HBColors.TextDim,
-            fontSize = 12.sp,
-        )
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = androidx.compose.ui.Alignment.CenterVertically,
+        ) {
+            Text("Summon", color = HBColors.Text, fontSize = 22.sp, fontWeight = FontWeight.Black)
+            Text("⭐ $pity/60", color = HBColors.Gold, fontSize = 14.sp, fontWeight = FontWeight.Black)
+        }
         ProgressBar((pity / 60f).coerceIn(0f, 1f))
 
         // Heroic banner
@@ -96,9 +98,9 @@ fun SummonScreen(
                             fontWeight = FontWeight.Black,
                         )
                         Text(
-                            "5★ rate ramps hard after 30 pulls; guaranteed 5★ at 60.",
+                            "Ramp 30+ · guarantee 60.",
                             color = HBColors.TextDim,
-                            fontSize = 12.sp,
+                            fontSize = 11.sp,
                         )
                         Spacer(Modifier.height(10.dp))
                         Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
@@ -154,9 +156,9 @@ fun SummonScreen(
                             fontWeight = FontWeight.Black,
                         )
                         Text(
-                            "Target a single faction — perfect for mono-faction auras.",
+                            "Target one faction.",
                             color = HBColors.TextDim,
-                            fontSize = 12.sp,
+                            fontSize = 11.sp,
                         )
                     }
                 }
